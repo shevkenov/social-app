@@ -8,24 +8,16 @@ const authController = {
             confirfmPassword: req.body.confirmPassword,
         }
 
-        firebase.firestore()
-            .doc('/users/' + user.email)
-            .get()
-            .then(doc => {
-                if(doc.exists){
-                    res.status(400).json({email: `this email: ${user.email} aready exists`})
-                }else{
-                    return firebase.auth()
-                    .createUserWithEmailAndPassword(user.email, user.password)
-                }
-            }).then(data => {
-                return data.user.getIdToken()
+        firebase.auth()
+            .createUserWithEmailAndPassword(user.email, user.password).then(data => {
+                
+                return data.user.getIdToken();
             })
             .then(token => {
-                res.status(201).json({token});
+                res.status(201).json({ token });
             })
             .catch(err => {
-                res.status(500).json({error: err.code})
+                res.status(500).json({ error: err.code })
             })
     },
     postAuthLogin: (req, res) => {
@@ -37,10 +29,10 @@ const authController = {
         firebase.auth()
             .signInWithEmailAndPassword(user.email, user.password)
             .then(userCredent => {
-                res.status(201).json({message: `User loggedin`});
+                res.status(201).json({ message: `User loggedin` });
             })
             .catch(err => {
-                res.status(500).json({error: err.code})
+                res.status(500).json({ error: err.code })
             })
     }
 }
