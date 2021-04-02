@@ -1,4 +1,4 @@
-const firebase = require('../config/firebase');
+const {firebase} = require('../config/firebase');
 
 const postController = {
     getPosts: (req, res) => {
@@ -16,6 +16,7 @@ const postController = {
         const newScream = {
             body: req.body.body,
             userHandle: req.body.userHandle,
+
             time: new Date()
         }
         firebase.firestore().collection('screams')
